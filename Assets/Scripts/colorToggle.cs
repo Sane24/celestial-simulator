@@ -11,6 +11,7 @@ public class colorToggle : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _sliderText;
     private Color baseColor;
     private Color secondColor;
+    // private static colorToggle myscript;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,4 +31,14 @@ public class colorToggle : MonoBehaviour
         auroraMat.SetColor("_MainColor", newColor);
         auroraMat.SetColor("_SecondaryColor", newColorSec);
     }
+
+    // void Awake() {
+    //     if(myscript == null){
+    //         myscript = this;
+    //         DontDestroyOnLoad(myscript);
+    //     } else {
+    //         Destroy(gameObject);
+    //     }
+    // }
+
 }
