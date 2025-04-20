@@ -15,10 +15,11 @@ public class colorToggle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         baseColor = auroraMat.GetColor("_MainColor");
         secondColor = auroraMat.GetColor("_SecondaryColor");
         _slider.onValueChanged.AddListener((v) => {
-           _sliderText.text = $"Hue: {v:0.00}";
+           _sliderText.text = $"Hue: {v:F2}";
             UpdateColor(v);
         });
     }
@@ -31,14 +32,5 @@ public class colorToggle : MonoBehaviour
         auroraMat.SetColor("_MainColor", newColor);
         auroraMat.SetColor("_SecondaryColor", newColorSec);
     }
-
-    // void Awake() {
-    //     if(myscript == null){
-    //         myscript = this;
-    //         DontDestroyOnLoad(myscript);
-    //     } else {
-    //         Destroy(gameObject);
-    //     }
-    // }
 
 }
