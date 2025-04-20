@@ -81,3 +81,4 @@ crashlytics-build.properties
 
 # VSCode workspace files
 *.code-workspace
+UpgradeLog*.htm
