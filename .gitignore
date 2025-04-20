@@ -72,3 +72,12 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# mac settings
+.DS_Store
+
+# VSCode settings
+.vscode/
+
+# VSCode workspace files
+*.code-workspace
