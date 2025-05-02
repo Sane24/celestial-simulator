@@ -5,8 +5,9 @@ Shader "Unlit/AuroraShaderCurtain_Multicolor"
         _Color1 ("Base Color", Color) = (0.2, 1, 0.5, 1)
         _Color2 ("Mid Color", Color) = (0.0, 0.6, 1, 1)
         _Color3 ("Edge Color", Color) = (0.8, 0.3, 1, 1)
-        _Speed ("Scroll Speed", Float) = 0.4
-        _Scale ("Noise Scale", Float) = 4.0
+        _Speed ("Scroll Speed", Float) = 0.2
+        _ScaleX ("Noise Scale X", Float) = 4.0
+        _ScaleY ("Noise Scale Y", Float) = 3.0
         _Intensity ("Glow Intensity", Float) = 1.8
         _WaveStrength ("Horizontal Wave", Float) = 0.03
         _RippleStrength ("Vertical Ripple", Float) = 0.05
@@ -38,18 +39,17 @@ Shader "Unlit/AuroraShaderCurtain_Multicolor"
                 float4 vertex : SV_POSITION;
             };
 
-            // Shader params
             float4 _Color1;
             float4 _Color2;
             float4 _Color3;
             float _Speed;
-            float _Scale;
+            float _ScaleX;
+            float _ScaleY;
             float _Intensity;
             float _WaveStrength;
             float _RippleStrength;
             float _RippleFrequency;
 
-            // Pseudo-random 2D noise
             float rand(float2 co) {
                 return frac(sin(dot(co.xy, float2(12.9898,78.233))) * 43758.5453);
             }
@@ -76,20 +76,24 @@ Shader "Unlit/AuroraShaderCurtain_Multicolor"
             fixed4 frag(v2f i) : SV_Target
             {
                 float t = _Time.y * _Speed;
-                float2 uv = i.uv * _Scale;
 
-                // Add vertical ripple movement
+                float2 uv = i.uv;
+                uv.x += t;
+
+                // Ripple motion
                 float ripple = sin(uv.x * _RippleFrequency + t * 1.5) * _RippleStrength;
                 uv.y += ripple;
 
-                // Add horizontal wave flow
+                // Horizontal wave motion
                 uv.x += sin(uv.y * 10.0 + t * 2.0) * _WaveStrength;
 
-                // Base noise
-                float n = noise(uv);
-                float shimmer = lerp(0.85, 1.15, noise(uv + float2(1.5, t * 0.4)));
+                float2 nUV = float2(uv.x * _ScaleX, uv.y * _ScaleY);
+                float n = noise(nUV);
 
-                // Multi-color bands using noise ranges
+                float shimmer = lerp(0.85, 1.15, noise(nUV + float2(1.5, t * 0.4)));
+                n *= shimmer;
+
+                // Color banding
                 float4 col;
                 if (n < 0.3)
                     col = lerp(_Color1, _Color2, n / 0.3);
@@ -98,17 +102,17 @@ Shader "Unlit/AuroraShaderCurtain_Multicolor"
                 else
                     col = lerp(_Color3, _Color1, (n - 0.7) / 0.3);
 
-                // Fading (top/bottom/side)
+                // Fading
                 float verticalFade = smoothstep(0.15, 0.95, i.uv.y);
-                float horizontalFade = smoothstep(0.0, 0.3, abs(i.uv.x - 0.5));
+
+                //Center glow, fade at edges
+                float horizontalFade = smoothstep(0.9, 0.0, abs(i.uv.x - 0.5));
                 float brightness = shimmer * verticalFade * horizontalFade;
 
                 col.rgb *= _Intensity * brightness;
                 col.a = brightness;
 
                 return col;
-                //return fixed4(1, 1, 1, 1); // Bright white with full alpha
-
             }
             ENDCG
         }
