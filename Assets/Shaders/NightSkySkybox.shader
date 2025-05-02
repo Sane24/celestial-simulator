@@ -36,7 +36,7 @@ Shader "Unlit/NightSkySkybox"
             struct v2f
             {
               // information to send from ver to frag shader
-                float2 dir : TEXCOORD0; // world direction of vertex
+                float3 dir : TEXCOORD0; // world direction of vertex
                 UNITY_FOG_COORDS(1)
                 float4 pos : SV_POSITION; // screen space
             };
@@ -62,7 +62,7 @@ Shader "Unlit/NightSkySkybox"
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex); // convert vertex position to clip space
-                o.dir = TRANSFORM_TEX(v.uv, _MainTex); // calculate world-space direction from camera to this vertex
+                o.dir = normalize(mul(unity_ObjectToWorld, v.vertex).xyz); // calculate world-space direction from camera to this vertex
                 UNITY_TRANSFER_FOG(o,o.pos);
                 return o;
             }
@@ -73,10 +73,10 @@ Shader "Unlit/NightSkySkybox"
                 // sample the texture
                 //fixed4 col = tex2D(_MainTex, i.dir);
 
-                float t = saturate(i.pos.y * 0.5 + 0.5); // gradient factor
+                float t = saturate(i.dir.y * 0.5 + 0.5); // gradient factor
                 fixed4 col = lerp(_BottomColor, _TopColor, t);
 
-                float3 starDir = floor(i.pos * _StarDensity); // tile this
+                float3 starDir = floor(i.dir * _StarDensity); // tile this
                 
                 // compute noise
                 // then step() for binary where vertex is bright if above threshold
