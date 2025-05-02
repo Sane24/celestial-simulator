@@ -14,6 +14,7 @@ public class reset : MonoBehaviour
     Material curMat;
     [SerializeField] private Slider _hueSlider;
     [SerializeField] private Slider _speedSlider;
+    [SerializeField] private Toggle _toggle;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +41,7 @@ public class reset : MonoBehaviour
 
         _hueSlider.value = 0.0f;
         _speedSlider.value = curMat.GetFloat("_Speed");
+        _toggle.isOn = true;
     }
 
 }
