@@ -4,10 +4,12 @@ Shader "Unlit/NightSkySkybox"
     {
       // Expose these parameters in Inspector view in Unity
         _MainTex ("Texture", 2D) = "white" {}
-        _TopColor ("Top Color", Color) = (0.05, 0.05, 0.2, 1)
-        _BottomColor ("Bottom Color", Color) = (0.0, 0.0, 0.05, 1)
-        _StarDensity ("Star Density", Float) = 100.0
-        _StarThreshold ("Star Threshold", Range(0, 1)) = 0.98
+        // https://rgbcolorpicker.com/0-1
+        // RGB but from 0 to 1
+        _TopColor ("Top Color", Color) = (0.05, 0.05, 0.2, 1) // dark blue
+        _BottomColor ("Bottom Color", Color) = (0.0, 0.0, 0.05, 1) // basically black
+        _StarDensity ("Density to Tile Star Pattern", Float) = 100.0
+        _StarThreshold ("Threshold for Number of Stars to Show", Range(0, 1)) = 0.5
         _StarBrightness ("Star Brightness", Float) = 1.0
     }
     SubShader // Define a rendering strategy
@@ -70,18 +72,30 @@ Shader "Unlit/NightSkySkybox"
             // fragment shader
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-                //fixed4 col = tex2D(_MainTex, i.dir);
-
                 float t = saturate(i.dir.y * 0.5 + 0.5); // gradient factor
                 fixed4 col = lerp(_BottomColor, _TopColor, t);
 
-                float3 starDir = floor(i.dir * _StarDensity); // tile this
-                
-                // compute noise
-                // then step() for binary where vertex is bright if above threshold
-                float starNoise = hash(starDir);
-                float star = step(_StarThreshold, starNoise);
+                // Compute base star direction
+                float3 dir = normalize(i.dir);
+                float3 gridPos = dir * _StarDensity;
+
+                // Get fractional offset inside grid cube
+                float3 cell = floor(gridPos);
+                float3 local = frac(gridPos);
+
+                // Get noise from center of this cell
+                float starNoise = hash(cell);
+
+                // Smooth falloff based on distance from center of star, appearance of soft glow)
+                float dist = distance(local, float3(0.5, 0.5, 0.5));
+                float intensity = smoothstep(0.6, 0.0, dist);
+
+                // only shows star if noise above threshold
+                float star = smoothstep(_StarThreshold, 1.0, starNoise) * intensity;
+
+                // vary brightness of star over time using sin wave
+                float twinkle = 0.5 + 0.5 * sin(dot(cell, float3(1.3, 2.1, 3.7)) + _Time.y * 2.0);
+                star *= twinkle;
 
                 col.rgb += star * _StarBrightness;
 
