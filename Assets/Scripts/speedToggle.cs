@@ -16,8 +16,8 @@ public class speedToggle : MonoBehaviour
     void Start()
     {
         mat = matSelector.currMat;
-        _slider.value = 0.5f;
-        mat.SetFloat("_Speed", 0.5f);
+        _slider.value = 0.4f;
+        mat.SetFloat("_Speed", 0.4f);
         _slider.onValueChanged.AddListener((v) => {
            _sliderText.text = $"Speed: {v:F1}";
             UpdateSpeed(v);

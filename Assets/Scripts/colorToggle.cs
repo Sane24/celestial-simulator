@@ -56,6 +56,7 @@ public class colorToggle : MonoBehaviour
     void Update()
     {
         Material newmat = matSelector.currMat;
+        resetSlider();
         if(newmat != auroraMat){
             auroraMat = newmat;
             if (!originalColors.ContainsKey(auroraMat))
@@ -81,6 +82,23 @@ public class colorToggle : MonoBehaviour
             hueMap[auroraMat] = v;
             UpdateColor(v);
             });
+        }
+    }
+
+    void resetSlider(){
+        MaterialColors currentColors = originalColors[auroraMat];
+        Color.RGBToHSV(currentColors.color1, out float originalHue, out _, out _);
+        float currentHue = 0f;
+        if(matSelector.currMat.HasProperty("_Color3")){
+            Color.RGBToHSV(auroraMat.GetColor("_Color1"), out  currentHue, out _, out _);
+        } else {
+            Color.RGBToHSV(auroraMat.GetColor("_MainColor"), out  currentHue, out _, out _);
+        }
+
+        if (Mathf.Approximately(currentHue, originalHue))
+        {
+            _slider.value = 0f;
+            _sliderText.text = $"Hue: {0.0f:F2}";
         }
     }
 
