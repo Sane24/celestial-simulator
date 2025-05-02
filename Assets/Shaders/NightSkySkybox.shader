@@ -72,21 +72,20 @@ Shader "Unlit/NightSkySkybox"
             // fragment shader
             fixed4 frag (v2f i) : SV_Target
             {
+                //// GRADIENT SKY
                 float t = saturate(i.dir.y * 0.5 + 0.5); // gradient factor
                 fixed4 col = lerp(_BottomColor, _TopColor, t);
 
+                //// STARS
                 // Compute base star direction
                 float3 dir = normalize(i.dir);
                 float3 gridPos = dir * _StarDensity;
 
-                // Get fractional offset inside grid cube
+                // Smooth falloff based on distance from center of star, appearance of soft glow)
                 float3 cell = floor(gridPos);
                 float3 local = frac(gridPos);
-
-                // Get noise from center of this cell
                 float starNoise = hash(cell);
 
-                // Smooth falloff based on distance from center of star, appearance of soft glow)
                 float dist = distance(local, float3(0.5, 0.5, 0.5));
                 float intensity = smoothstep(0.6, 0.0, dist);
 
@@ -99,7 +98,7 @@ Shader "Unlit/NightSkySkybox"
 
                 col.rgb += star * _StarBrightness;
 
-                // apply fog
+                //// FOG
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }
