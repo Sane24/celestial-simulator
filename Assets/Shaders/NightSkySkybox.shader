@@ -22,7 +22,6 @@ Shader "Unlit/NightSkySkybox"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
@@ -37,7 +36,7 @@ Shader "Unlit/NightSkySkybox"
             struct v2f
             {
               // information to send from ver to frag shader
-                float2 uv : TEXCOORD0; // world direction of vertex
+                float2 dir : TEXCOORD0; // world direction of vertex
                 UNITY_FOG_COORDS(1)
                 float4 pos : SV_POSITION; // screen space
             };
@@ -63,8 +62,7 @@ Shader "Unlit/NightSkySkybox"
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex); // convert vertex position to clip space
-                // o.dir = normalize(mul(unity_ObjectToWorld, v.vertex).xyz);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex); // calculate world-space direction from camera to this vertex
+                o.dir = TRANSFORM_TEX(v.uv, _MainTex); // calculate world-space direction from camera to this vertex
                 UNITY_TRANSFER_FOG(o,o.pos);
                 return o;
             }
@@ -73,7 +71,7 @@ Shader "Unlit/NightSkySkybox"
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                //fixed4 col = tex2D(_MainTex, i.uv);
+                //fixed4 col = tex2D(_MainTex, i.dir);
 
                 float t = saturate(i.pos.y * 0.5 + 0.5); // gradient factor
                 fixed4 col = lerp(_BottomColor, _TopColor, t);
