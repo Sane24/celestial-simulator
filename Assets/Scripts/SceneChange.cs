@@ -7,8 +7,11 @@ using TMPro;
 public class SceneChange : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown sceneDropdown;
+    public Material nightSkybox;
+    public Material nightSkybox2;
+    [SerializeField] private Slider _dayNightslider;
     private string[] sceneNames = { "Scenes/mainscene", "Scenes/mountain_scene"};
-    private List<string> displayNames = new List<string> { "Calm Mountain Lake", "Snowy Mountains" };
+    private List<string> displayNames = new List<string> {"Calm Mountain Lake", "Snowy Mountains" };
 
     void Start()
     {
@@ -23,6 +26,12 @@ public class SceneChange : MonoBehaviour
     {
         string sceneToLoad = sceneNames[index];
         SceneManager.LoadScene(sceneToLoad);
+
+        if(_dayNightslider.value == 2 && index == 0){
+             RenderSettings.skybox = nightSkybox;
+        } else if(_dayNightslider.value == 2 && index == 1) {
+            RenderSettings.skybox = nightSkybox2;
+        }
     }
 
 }

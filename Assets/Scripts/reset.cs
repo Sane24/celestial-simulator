@@ -12,10 +12,14 @@ public class reset : MonoBehaviour
     public Material auraMat;
     public Material multiMatMotion;
     public Material Spectral;
+    public Material nightSkybox;
+    public Material nightSkybox2;
     public matSelector matSelector;
+    [SerializeField] private TMP_Dropdown sceneDropdown;
     Material curMat;
     [SerializeField] private Slider _hueSlider;
     [SerializeField] private Slider _speedSlider;
+    [SerializeField] private Slider _dayNightslider;
     [SerializeField] private Toggle _toggle;
     // Start is called before the first frame update
     void Start()
@@ -52,6 +56,13 @@ public class reset : MonoBehaviour
         _hueSlider.value = 0.0f;
         _speedSlider.value = curMat.GetFloat("_Speed");
         _toggle.isOn = true;
+
+        if(sceneDropdown.value == 0){
+             RenderSettings.skybox = nightSkybox;
+        } else {
+            RenderSettings.skybox = nightSkybox2;
+        }
+        _dayNightslider.value = 2;
     }
 
 }
