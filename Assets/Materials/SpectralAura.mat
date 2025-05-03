@@ -118,7 +118,7 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _UseLUT: 1
+    - _UseLUT: 0
     - _VerticalFade: 2.5
     - _WavelengthMax: 750
     - _WavelengthMin: 380
