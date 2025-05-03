@@ -9,7 +9,7 @@ Shader "Unlit/NightSkySkybox"
         _TopColor ("Top Color", Color) = (0.05, 0.05, 0.2, 1) // dark blue
         _BottomColor ("Bottom Color", Color) = (0.0, 0.0, 0.05, 1) // basically black
         _StarDensity ("Density to Tile Star Pattern", Float) = 100.0
-        _StarThreshold ("Threshold for Number of Stars to Show", Range(0, 1)) = 0.5
+        _StarThreshold ("Threshold for Number of Stars to Show", Range(0, 1)) = 0.948
         _StarBrightness ("Star Brightness", Float) = 1.0
     }
     SubShader // Define a rendering strategy
