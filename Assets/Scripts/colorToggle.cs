@@ -91,7 +91,10 @@ public class colorToggle : MonoBehaviour
         float currentHue = 0f;
         if(matSelector.currMat.HasProperty("_Color3")){
             Color.RGBToHSV(auroraMat.GetColor("_Color1"), out  currentHue, out _, out _);
-        } else {
+        } else if(matSelector.currMat.HasProperty("_HueShift")){
+            currentHue = auroraMat.GetFloat("_HueShift");
+        }
+        else {
             Color.RGBToHSV(auroraMat.GetColor("_MainColor"), out  currentHue, out _, out _);
         }
 
@@ -109,7 +112,10 @@ public class colorToggle : MonoBehaviour
             secondColor = auroraMat.GetColor("_Color2");
             thirdColor = auroraMat.GetColor("_Color3");
             UpdateColorMulti(hue);
-        } else {
+        } else if(matSelector.currMat.HasProperty("_HueShift")){
+            auroraMat.SetFloat("_HueShift", hue);
+        }
+        else {
             mainColor = auroraMat.GetColor("_MainColor");
             secondaryColor = auroraMat.GetColor("_SecondaryColor");
             UpdateColorSingle(hue);
@@ -124,7 +130,10 @@ public class colorToggle : MonoBehaviour
             matColors.color1 = auroraMat.GetColor("_Color1");
             matColors.color2 = auroraMat.GetColor("_Color2");
             matColors.color3 = auroraMat.GetColor("_Color3");
-        } else if (auroraMat.HasProperty("_BendStrength")) {
+        } else if (auroraMat.HasProperty("_HueShift")) {
+            matColors.color1 = new Color(auroraMat.GetFloat("_HueShift"), 0, 0);
+        }
+        else if (auroraMat.HasProperty("_BendStrength")) {
             matColors.color1 = auroraMat.GetColor("_MainColor");
             matColors.color2 = auroraMat.GetColor("_SecondaryColor");
         }

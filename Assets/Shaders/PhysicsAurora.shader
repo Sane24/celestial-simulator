@@ -8,6 +8,7 @@ Shader "Unlit/AuroraSpectralEmission"
         _ScaleY ("Noise Scale Y", Float) = 8.0
         _VerticalFade ("Vertical Fade Sharpness", Float) = 2.5
         _ShimmerSpeed ("Shimmer Speed", Float) = 0.4
+        _HueShift ("Hue Shift", Range(0,1)) = 0.0
 
         [NoScaleOffset] _SpectralLUT ("Spectral LUT (optional)", 2D) = "white" {}
         _UseLUT ("Use Spectral LUT", Float) = 0 // 0 = off, 1 = on
@@ -40,6 +41,7 @@ Shader "Unlit/AuroraSpectralEmission"
             float _ScaleY;
             float _VerticalFade;
             float _ShimmerSpeed;
+            float _HueShift;
 
             struct appdata
             {
@@ -140,11 +142,16 @@ Shader "Unlit/AuroraSpectralEmission"
                 {
                     float wavelength = lerp(_WavelengthMin, _WavelengthMax, n);
                     auroraColor = wavelengthToRGB(wavelength);
+
+            
                 }
 
                 // Vertical fade (glow near top)
                 float fade = pow(saturate(i.uv.y), _VerticalFade);
                 float alpha = fade * n;
+                
+                //hue shift
+                auroraColor = lerp(auroraColor, float3(0.5, 0.5, 0.5), _HueShift);
 
                 // Final HDR emission
                 float3 emission = auroraColor * _Intensity * fade;

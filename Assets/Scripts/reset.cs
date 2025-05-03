@@ -46,6 +46,7 @@ public class reset : MonoBehaviour
         auraMat.SetColor("_SecondaryColor", new Color(0.0f, 0.6f, 1f, 1f));
         auraMat.SetFloat("_Speed", 0.5f);
 
+        Spectral.SetFloat("_HueShift", 0.0f);
         Spectral.SetFloat("_Speed", 0.4f);
 
         _hueSlider.value = 0.0f;
