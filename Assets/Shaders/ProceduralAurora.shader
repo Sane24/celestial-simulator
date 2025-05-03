@@ -49,7 +49,6 @@ Shader "Unlit/ProceduralAurora"
             float _VerticalFade;
             float _ShimmerSpeed;
 
-            // Simple 2D value noise
             float rand(float2 co)
             {
                 return frac(sin(dot(co, float2(12.9898, 78.233))) * 43758.5453);
@@ -77,25 +76,25 @@ Shader "Unlit/ProceduralAurora"
 
             fixed4 frag(v2f i) : SV_Target
             {
-                // Animate scroll horizontally
                 float2 uv = i.uv;
                 uv.x += _Time.y * _Speed;
 
-                // More detail in vertical noise
                 float2 nUV = float2(uv.x * _ScaleX, uv.y * _ScaleY);
                 float n = noise(nUV);
 
-                // Extra shimmer layer
                 float shimmer = lerp(0.9, 1.1, noise(nUV + float2(1.7, _Time.y * _ShimmerSpeed)));
                 n *= shimmer;
 
-                // Smooth vertical fade
-                float fade = pow(saturate(i.uv.y), _VerticalFade);
+                float verticalFade = pow(saturate(i.uv.y), _VerticalFade);
 
-                // Blend main and secondary color using noise
+                // Horizontal fade centered at uv.x = 0.5
+                float horizontalFade = smoothstep(0.0, 0.5, 1.0 - abs(i.uv.x - 0.5) * 2.0);
+
+                float edgeFade = verticalFade * horizontalFade;
+
                 float4 color = lerp(_MainColor, _SecondaryColor, n);
-                color.rgb *= _Intensity * fade;
-                color.a = fade * n;
+                color.rgb *= _Intensity * edgeFade;
+                color.a = edgeFade * n;
 
                 return color;
             }
