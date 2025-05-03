@@ -41,9 +41,9 @@ Material:
     - _ArcHeight: 0.1
     - _BendStrength: 5
     - _Intensity: 1
-    - _Speed: 3.1178586
+    - _Speed: 0.5
     - _WaveStrength: 0.02
     m_Colors:
-    - _MainColor: {r: 0.19999993, g: 0.30342954, b: 1, a: 1}
-    - _SecondaryColor: {r: 0.89571285, g: 0, b: 1, a: 1}
+    - _MainColor: {r: 0.2, g: 1, b: 0.5, a: 1}
+    - _SecondaryColor: {r: 0, g: 0.6, b: 1, a: 1}
   m_BuildTextureStacks: []
