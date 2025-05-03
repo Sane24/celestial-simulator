@@ -3,15 +3,17 @@ Shader "Unlit/water"
     Properties
     {
        //_Cubemap("Reflection Cubemap", CUBE) = "" {}
-       _Transparency("Transparency", Range(0, 1)) = 0.6
+       _Transparency("Transparency", Range(0, 1)) = 0.2
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Transparent" }
         LOD 100
 
         Pass
         {
+            Blend SrcAlpha OneMinusSrcAlpha
+            ZWrite On
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
