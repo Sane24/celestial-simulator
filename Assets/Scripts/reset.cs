@@ -10,6 +10,8 @@ public class reset : MonoBehaviour
     public Material multiMat;
     public Material auroraMat;
     public Material auraMat;
+    public Material multiMatMotion;
+    public Material Spectral;
     public matSelector matSelector;
     Material curMat;
     [SerializeField] private Slider _hueSlider;
@@ -31,6 +33,11 @@ public class reset : MonoBehaviour
         multiMat.SetColor("_Color3", new Color(0.8f, 0.3f, 1f, 1f));
         multiMat.SetFloat("_Speed", 0.4f);
 
+        multiMatMotion.SetColor("_Color1", new Color(0.2f, 1f, 0.5f, 1f));
+        multiMatMotion.SetColor("_Color2", new Color(0.0f, 0.6f, 1f, 1f));
+        multiMatMotion.SetColor("_Color3", new Color(0.8f, 0.3f, 1f, 1f));
+        multiMatMotion.SetFloat("_Speed", 0.2f);
+
         auroraMat.SetColor("_MainColor", new Color(0.2f, 1f, 0.5f, 1f));
         auroraMat.SetColor("_SecondaryColor", new Color(0.0f, 0.6f, 1f, 1f));
         auroraMat.SetFloat("_Speed", 0.5f);
@@ -38,6 +45,8 @@ public class reset : MonoBehaviour
         auraMat.SetColor("_MainColor", new Color(0.2f, 1f, 0.5f, 1f));
         auraMat.SetColor("_SecondaryColor", new Color(0.0f, 0.6f, 1f, 1f));
         auraMat.SetFloat("_Speed", 0.5f);
+
+        Spectral.SetFloat("_Speed", 0.4f);
 
         _hueSlider.value = 0.0f;
         _speedSlider.value = curMat.GetFloat("_Speed");
