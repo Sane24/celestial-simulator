@@ -113,7 +113,7 @@ public class AuroraCurtainMesh : MonoBehaviour
             // Animate based on X and Y world position
             float ripplePhase = (baseV.x * rippleDirection.x + baseV.y * rippleDirection.y) * rippleFrequency + time;
 
-            // Optional: amplitude taper (reduce ripple higher up)
+            // amplitude taper (reduce ripple higher up)
             float verticalTaper = Mathf.Lerp(1f, 0.2f, baseV.y / height);
 
             float ripple = Mathf.Sin(ripplePhase) * rippleAmplitude * verticalTaper;
