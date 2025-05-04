@@ -102,11 +102,13 @@ Shader "Unlit/AuroraShaderCurtain_Multicolor"
                 else
                     col = lerp(_Color3, _Color1, (n - 0.7) / 0.3);
 
-                // Fading
-                float verticalFade = smoothstep(0.15, 0.95, i.uv.y);
+                // Vertical fade: fade near top and bottom
+                float verticalFade = smoothstep(0.05, 0.4, i.uv.y) * (1.0 - smoothstep(0.7, 0.95, i.uv.y));
 
-                //Center glow, fade at edges
-                float horizontalFade = smoothstep(0.9, 0.0, abs(i.uv.x - 0.5));
+                // Horizontal fade: fade near both sides
+                float horizontalEdge = abs(i.uv.x - 0.5) * 2.0;
+                float horizontalFade = 1.0 - smoothstep(0.7, 1.0, horizontalEdge);
+
                 float brightness = shimmer * verticalFade * horizontalFade;
 
                 col.rgb *= _Intensity * brightness;

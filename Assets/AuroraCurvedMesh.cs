@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[ExecuteAlways]
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class AuroraCurtainMesh : MonoBehaviour
 {
@@ -19,22 +18,13 @@ public class AuroraCurtainMesh : MonoBehaviour
     public float rippleAmplitude = 0.3f;
     public float rippleFrequency = 2.5f;
 
-    private MeshFilter meshFilter;
     private Mesh mesh;
     private Vector3[] baseVertices;
+    private Vector3[] animatedVertices;
 
-    void Awake()
+    void Start()
     {
-        meshFilter = GetComponent<MeshFilter>();
         GenerateMesh();
-    }
-
-    void OnValidate()
-    {
-        if (!Application.isPlaying && meshFilter != null)
-        {
-            GenerateMesh();
-        }
     }
 
     void GenerateMesh()
@@ -43,7 +33,8 @@ public class AuroraCurtainMesh : MonoBehaviour
         mesh.name = "Aurora Curtain Mesh";
 
         int vertCount = (widthSegments + 1) * (heightSegments + 1);
-        Vector3[] vertices = new Vector3[vertCount];
+        baseVertices = new Vector3[vertCount];
+        animatedVertices = new Vector3[vertCount];
         Vector2[] uvs = new Vector2[vertCount];
         int[] triangles = new int[widthSegments * heightSegments * 6];
 
@@ -59,11 +50,9 @@ public class AuroraCurtainMesh : MonoBehaviour
             {
                 float u = (float)x / widthSegments;
                 float xPos = (u - 0.5f) * width;
-
-                // S-curve via sine wave in Z direction
                 float zPos = Mathf.Sin(u * Mathf.PI * waveFrequency) * waveAmplitude;
 
-                vertices[vertIndex] = new Vector3(xPos, yPos, zPos);
+                baseVertices[vertIndex] = new Vector3(xPos, yPos, zPos);
                 uvs[vertIndex] = new Vector2(u, v);
 
                 if (x < widthSegments && y < heightSegments)
@@ -84,38 +73,32 @@ public class AuroraCurtainMesh : MonoBehaviour
             }
         }
 
-        mesh.vertices = vertices;
+        mesh.vertices = baseVertices;
         mesh.uv = uvs;
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
 
-        meshFilter.sharedMesh = mesh;
-        baseVertices = mesh.vertices;
+        GetComponent<MeshFilter>().mesh = mesh;
     }
 
     void Update()
     {
-        if (mesh == null || baseVertices == null)
-            return;
+        if (mesh == null || baseVertices == null) return;
 
-        Vector3[] animatedVertices = new Vector3[baseVertices.Length];
         float time = Time.time * rippleSpeed;
 
         for (int i = 0; i < baseVertices.Length; i++)
         {
             Vector3 v = baseVertices[i];
 
-            // Animate ripple with vertical dependency (better wave travel)
-            float ripple = Mathf.Sin(v.x * rippleFrequency + v.y * 0.5f + time) * rippleAmplitude;
+            // Wave based on position and time, tapered by vertical Y
+            float taper = 1.0f - (v.y / height);
+            float ripple = Mathf.Sin(v.x * rippleFrequency + v.y * 0.5f + time) * rippleAmplitude * taper;
 
-            // Apply ripple to Z (depth)
-            v.z += ripple;
-            animatedVertices[i] = v;
+            animatedVertices[i] = new Vector3(v.x, v.y, v.z + ripple);
         }
 
         mesh.vertices = animatedVertices;
         mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
     }
 }
