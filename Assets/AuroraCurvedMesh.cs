@@ -82,23 +82,29 @@ public class AuroraCurtainMesh : MonoBehaviour
     }
 
     void Update()
+{
+    if (mesh == null || baseVertices == null)
+        return;
+
+    Vector3[] animatedVertices = new Vector3[baseVertices.Length];
+    float time = Time.time * rippleSpeed;
+
+    for (int i = 0; i < baseVertices.Length; i++)
     {
-        if (mesh == null || baseVertices == null) return;
+        Vector3 v = baseVertices[i];
 
-        float time = Time.time * rippleSpeed;
+        // Wave moves across X direction and along Y height
+        float phase = v.x * rippleFrequency + time;
+        float verticalOffset = v.y * 0.5f; // optional: vary ripple across height
 
-        for (int i = 0; i < baseVertices.Length; i++)
-        {
-            Vector3 v = baseVertices[i];
+        v.z = Mathf.Sin(phase + verticalOffset) * rippleAmplitude;
 
-            // Wave based on position and time, tapered by vertical Y
-            float taper = 1.0f - (v.y / height);
-            float ripple = Mathf.Sin(v.x * rippleFrequency + v.y * 0.5f + time) * rippleAmplitude * taper;
-
-            animatedVertices[i] = new Vector3(v.x, v.y, v.z + ripple);
-        }
-
-        mesh.vertices = animatedVertices;
-        mesh.RecalculateNormals();
+        animatedVertices[i] = v;
     }
+
+    mesh.vertices = animatedVertices;
+    mesh.RecalculateNormals();
+    mesh.RecalculateBounds();
+}
+
 }
