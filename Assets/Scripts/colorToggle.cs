@@ -39,9 +39,15 @@ public class colorToggle : MonoBehaviour
         baseColor = new Color(0.2f, 1f, 0.5f, 1f);
         secondColor = new Color(0.0f, 0.6f, 1f, 1f);
         thirdColor = new Color(0.8f, 0.3f, 1f, 1f);
-        auroraMat.SetColor("_Color1", baseColor);
-        auroraMat.SetColor("_Color2", secondColor);
-        auroraMat.SetColor("_Color3", thirdColor);
+        if (auroraMat.HasProperty("_Color3")){
+            auroraMat.SetColor("_Color1", baseColor);
+            auroraMat.SetColor("_Color2", secondColor);
+            auroraMat.SetColor("_Color3", thirdColor);
+        }
+        else if(matSelector.currMat.HasProperty("_MainColor")){
+            mainColor = auroraMat.GetColor("_MainColor");
+            secondaryColor = auroraMat.GetColor("_SecondaryColor");
+        }
         UpdateMaterialColors();
         currentMatColors = originalColors[auroraMat];
 
