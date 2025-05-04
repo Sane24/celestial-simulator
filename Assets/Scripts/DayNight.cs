@@ -12,6 +12,8 @@ public class DayNight : MonoBehaviour
     public Material blendSkybox;
     public Material nightSkybox;
     public Material nightSkybox2;
+    GameObject stars;
+    GameObject stars2;
     int currentScene = 0;
     [SerializeField] private TMP_Dropdown sceneDropdown;
     // Start is called before the first frame update
@@ -26,15 +28,35 @@ public class DayNight : MonoBehaviour
     void Update()
     {
         currentScene = sceneDropdown.value;
+        if(currentScene == 0){
+            if(stars == null){
+                stars2 = GameObject.Find("Falling Stars");
+                stars = GameObject.Find("More Falling Stars");
+            }
+        }
         if(_slider.value == 0){
            RenderSettings.skybox = daySkybox;
+           if(currentScene == 0){
+            stars.SetActive(false);
+            stars2.SetActive(false);
+           }
         } else if(_slider.value == 1){
            RenderSettings.skybox = blendSkybox;
+            if(currentScene == 0){
+                stars.SetActive(true);
+                stars2.SetActive(true);
+           }
         } else if(_slider.value == 2 && currentScene == 1){
             RenderSettings.skybox = nightSkybox2;
         }
         else {
             RenderSettings.skybox = nightSkybox;
+            if(stars == null){
+                stars2 = GameObject.Find("Falling Stars");
+                stars = GameObject.Find("More Falling Stars");
+            }
+             stars.SetActive(true);
+             stars2.SetActive(true);
         }
     }
 }

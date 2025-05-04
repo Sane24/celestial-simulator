@@ -363,9 +363,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneDropdown: {fileID: 143735541}
-  nightSkybox: {fileID: 0}
-  nightSkybox2: {fileID: 0}
-  _dayNightslider: {fileID: 0}
+  nightSkybox: {fileID: 2100000, guid: 51a1f376c5b138e418bee4f7efaa3e59, type: 2}
+  nightSkybox2: {fileID: 2100000, guid: ab675e6698bde46fd87143fb0d7580cb, type: 2}
+  _dayNightslider: {fileID: 1989610638}
   _auroratoggle: {fileID: 1762678363}
 --- !u!114 &143735541
 MonoBehaviour:
@@ -4524,11 +4524,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _toggle: {fileID: 1762678363}
   targetMaterials:
-  - {fileID: 2100000, guid: 024efd6e8f7604b0499f68ecb4359699, type: 2}
+  - {fileID: 2100000, guid: 76823d873e8244e0db9714a09915914b, type: 2}
   - {fileID: 2100000, guid: 929135ceb06044f18a695ca6fbf7bc62, type: 2}
   - {fileID: 2100000, guid: 934d55db7d5db46ceb7d63343230a95a, type: 2}
   - {fileID: 2100000, guid: 157fbdc89b4324b95ba4f29b4711786e, type: 2}
-  - {fileID: 2100000, guid: 76823d873e8244e0db9714a09915914b, type: 2}
 --- !u!114 &1762678363
 MonoBehaviour:
   m_ObjectHideFlags: 0
