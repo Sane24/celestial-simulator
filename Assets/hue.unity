@@ -366,6 +366,7 @@ MonoBehaviour:
   nightSkybox: {fileID: 0}
   nightSkybox2: {fileID: 0}
   _dayNightslider: {fileID: 0}
+  _auroratoggle: {fileID: 1762678363}
 --- !u!114 &143735541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2238,10 +2239,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   matDropdown: {fileID: 837899492}
   targetMaterials:
-  - {fileID: 2100000, guid: 024efd6e8f7604b0499f68ecb4359699, type: 2}
+  - {fileID: 2100000, guid: 157fbdc89b4324b95ba4f29b4711786e, type: 2}
   - {fileID: 2100000, guid: 929135ceb06044f18a695ca6fbf7bc62, type: 2}
   - {fileID: 2100000, guid: 934d55db7d5db46ceb7d63343230a95a, type: 2}
-  - {fileID: 2100000, guid: 157fbdc89b4324b95ba4f29b4711786e, type: 2}
   - {fileID: 2100000, guid: 76823d873e8244e0db9714a09915914b, type: 2}
   currMat: {fileID: 2100000, guid: 024efd6e8f7604b0499f68ecb4359699, type: 2}
 --- !u!114 &837899492

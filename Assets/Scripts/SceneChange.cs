@@ -10,6 +10,7 @@ public class SceneChange : MonoBehaviour
     public Material nightSkybox;
     public Material nightSkybox2;
     [SerializeField] private Slider _dayNightslider;
+    [SerializeField] private Toggle _auroratoggle;
     private string[] sceneNames = { "Scenes/mainscene", "Scenes/mountain_scene"};
     private List<string> displayNames = new List<string> {"Calm Mountain Lake", "Snowy Mountains" };
 
@@ -26,6 +27,7 @@ public class SceneChange : MonoBehaviour
     {
         string sceneToLoad = sceneNames[index];
         SceneManager.LoadScene(sceneToLoad);
+        _auroratoggle.isOn = true;
 
         if(_dayNightslider.value == 2 && index == 0){
              RenderSettings.skybox = nightSkybox;

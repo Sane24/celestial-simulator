@@ -37,7 +37,6 @@ public class visability : MonoBehaviour
                 {
                     if (targetMaterials.Contains(materials[j]))
                     {
-                        Debug.Log($"Toggling: {rend.name} | Visible: {visible}");
                         rend.enabled = visible;
                         break;
                     }
