@@ -5,15 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/mountain_scene.unity
-    guid: c6b2589354db1495b892989bbbe64df1
-  - enabled: 1
     path: Assets/hue.unity
     guid: 8166e0cc090314cf7963699d69cfb290
+  - enabled: 1
+    path: Assets/Scenes/mountain_scene.unity
+    guid: c6b2589354db1495b892989bbbe64df1
   - enabled: 0
     path: Assets/mountain_scene.unity
     guid: e639896ea1f7d486285cf50306682515
